@@ -30,7 +30,7 @@ async function main() {
   let embed = new discord.EmbedBuilder()
     .setURL(url)
     .setColor(color)
-    .setAuthor({name: payload.sender.login, iconURL: payload.sender.avatar_url, url: payload.sender.url})
+    .setAuthor({name: payload.sender.html_url, iconURL: payload.sender.avatar_url, url: payload.sender.url})
     .setTitle(`[${payload.repository.name}:${branch}] ${size} ${size == 1 ? "new commit" : "new commits"}`)
     .setDescription(getChangeLog(payload))
 
@@ -39,7 +39,11 @@ async function main() {
     const client = new discord.WebhookClient({url: core.getInput("webhook_url")});
 
     core.info("Sending webhook message...");
-    await client.send({embeds: [embed]}).then(() => {core.info("Successfully sent the message!")}).catch((error) => {throw new Error(error)});
+    await client.send({
+      embeds: [embed],
+      username: "Github",
+      avatarURL: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+    }).then(() => {core.info("Successfully sent the message!")}).catch((error) => {throw new Error(error)});
   } catch (error) {throw new Error(error)};
 };
 
