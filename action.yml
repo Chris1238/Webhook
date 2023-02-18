@@ -1,0 +1,16 @@
+name: 'discord-webhook'
+description: 'This GitHub Action sends fancy and more meaningful discord messages for your commits. It includes Test results and coverage.'
+
+inputs:
+  webhook_url:
+    description: Discord webhook URL
+  job_status:
+    description: Job status
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+branding:
+  icon: check-circle
+  color: blue
