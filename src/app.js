@@ -28,7 +28,7 @@ async function main() {
   core.debug(`Received ${commits.length}/${size} commits...`);
   core.info("Constructing embed...");
 
-  let embed = new discord.MessageEmbed()
+  let embed = new discord.EmbedBuilder()
     .setURL(url)
     .setColor(color)
     .setTitle(`⚡ ${size} ${size == 1 ? "Commit" : "Commits"}\n📁\`${repository}\`\n🌳 \`${branch}\``)
