@@ -39,7 +39,7 @@ async function main() {
     const client = new discord.WebhookClient({url: core.getInput("webhook_url")});
 
     core.info("Sending webhook message...");
-    client.send({embeds: [embed]}).then(() => {core.info("Successfully sent the message!")}).catch((error) => {throw new Error(error)});
+    await client.send({embeds: [embed]}).then(() => {core.info("Successfully sent the message!")}).catch((error) => {throw new Error(error)});
   } catch (error) {throw new Error(error)};
 };
 
