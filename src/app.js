@@ -18,7 +18,6 @@ async function main() {
   };
 
   const branch = payload.ref.split("/")[payload.ref.split("/").length - 1];
-  const repository = payload.repository.full_name;
   const commits = payload.commits;
   const size = commits.length;
   const url = payload.compare;
@@ -31,7 +30,8 @@ async function main() {
   let embed = new discord.EmbedBuilder()
     .setURL(url)
     .setColor(color)
-    .setTitle(`⚡ ${size} ${size == 1 ? "Commit" : "Commits"}\n📁\`${repository}\`\n🌳 \`${branch}\``)
+    .setAuthor({name: payload.sender.login, iconURL: payload.sender.avatar_url, url: payload.sender.url})
+    .setTitle(`[${payload.repository.name}:${branch}] ${size} ${size == 1 ? "new commit" : "new commits"}`)
     .setDescription(getChangeLog(payload))
 
   try {
@@ -55,11 +55,9 @@ function getChangeLog (payload) {
     };
 
     let commit = commits[i];
-    const username = commit.author.username;
-
     let sha = commit.id.substring(0, 6);
     let message = commit.message.length > 128 ? commit.message.substring(0, 128) + "..." : commit.message;
-    changelog += `[\`${sha}\`](${commit.url}) ${message} by _@${username}_\n`;
+    changelog += `[\`${sha}\`](${commit.url}) ${message} - ${payload.sender.login}\n`;
   }; return changelog;
 };
 
