@@ -10,10 +10,10 @@ async function main() {
   let color = "7289DA"
 
   if (jobstatus == "success") {
-    color = "3066993";
+    color = "43B582";
     status = "Passed";
   } else if (jobstatus == "failure") {
-    color = "15158332";
+    color = "F04A47";
     status = "Failed";
   };
 
