@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const discord = require("discord.js");
+const discord = require("webhook-discord");
 const process = require("process");
 
 async function main() {
@@ -26,21 +26,17 @@ async function main() {
   if (commits.length == 0) return core.warning(`Aborting analysis, found no commits.`);
   core.debug(`Received payload: ${JSON.stringify(payload, null, 2)}`);
   core.debug(`Received ${commits.length}/${size} commits...`);
-  core.info("Constructing Embed...");
+  core.info("Constructing embed...");
 
-  let embed = new discord.MessageEmbed()
+  const embed = new discord.MessageBuilder()
     .setURL(url)
     .setColor(color)
     .setTitle(`⚡ ${size} ${size == 1 ? "Commit" : "Commits"}\n📁\`${repository}\`\n🌳 \`${branch}\``)
-    .setDescription(getChangeLog(payload))
+    .setDescription(getChangeLog(payload));
 
-  try {
-    core.info("Preparing Discord webhook client...");
-    const client = new discord.WebhookClient({url: core.getInput("webhook_url")});
-
-    core.info("Sending webhook message...");
-    client.send({embeds: [embed]}).then((result) => {core.info("Successfully sent the message!")}).catch((error) => {throw new Error(error)});
-  } catch (error) {throw new Error(error)};
+  core.info("Sending webhook message...");
+  const Hook = new discord.Webhook(core.getInput("webhook_url"));
+  Hook.send(embed);
 };
 
 function getChangeLog (payload) {
