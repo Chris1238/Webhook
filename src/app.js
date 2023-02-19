@@ -30,7 +30,7 @@ async function main() {
   let embed = new discord.EmbedBuilder()
     .setURL(url)
     .setColor(color)
-    .setAuthor({name: payload.sender.html_url, iconURL: payload.sender.avatar_url, url: payload.sender.url})
+    .setAuthor({name: payload.sender.login, iconURL: payload.sender.avatar_url, url: payload.sender.html_url})
     .setTitle(`[${payload.repository.name}:${branch}] ${size} ${size == 1 ? "new commit" : "new commits"}`)
     .setDescription(getChangeLog(payload))
 
